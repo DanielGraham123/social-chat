@@ -17,7 +17,7 @@ const app = express();
 
 dotenv.config();
 
-const hostname = '127.0.0.1';
+const hostname = '0.0.0.0';
 const port = 3131;
 
 const __filename = fileURLToPath(import.meta.url);
