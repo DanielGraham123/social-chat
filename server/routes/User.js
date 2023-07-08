@@ -1,13 +1,14 @@
 import express from 'express';
-import { deleteUser, getAllUsers, getUser, updateUser } from '../controllers/User.js';
+import { deleteUser, followUser, getAllUsers, getUser, unfollowUser, updateUser } from '../controllers/User.js';
 
 const router = express.Router();
 
 /**
 * @openapi
-* /api/users/all:
+* /api/user/all:
 *  get:
 *   description: Get all users
+*   tags: [User]
 *   responses:
 *    200:
 *     description: Success
@@ -19,9 +20,10 @@ const router = express.Router();
 router.get('/all', getAllUsers);
 /**
 * @openapi
-* /api/users/{id}: 
+* /api/user/{id}: 
 *  get: 
 *   description: Get user by id
+*  tags: [User]
 *   parameters:
 *    - in: path
 *      name: id
@@ -39,9 +41,10 @@ router.get('/all', getAllUsers);
 router.get('/:id', getUser);
 /**
 * @openapi
-* /api/users/{id}:
+* /api/user/{id}:
 *  put:
 *   description: Update user by id
+*   tags: [User]
 *   parameters:
 *    - in: path
 *      name: id
@@ -79,9 +82,64 @@ router.get('/:id', getUser);
 router.put('/:id', updateUser);
 /**
 * @openapi
-* /api/users/{id}:
+* /api/user/{followingUserId}/follow:
+*  put:
+*   description: Follow a user
+*   tags: [User]
+*   parameters:
+*    - in: path
+*      name: followingUserId
+*      required: true
+*      schema:
+*       type: string
+*   requestBody:
+*    content:
+*     application/json:
+*      schema:
+*       type: object
+*       properties:
+*        currentUserId:
+*         type: string
+*   responses:
+*    200:
+*     description: Success
+*    500:
+*     description: Some server error
+*/
+router.put('/:followingUserId/follow', followUser);
+/**
+* @openapi
+* /api/user/{followingUserId}/unfollow:
+*  put:
+*   description: Unfollow a user
+*   tags: [User]
+*   parameters:
+*    - in: path
+*      name: followingUserId
+*      required: true
+*      schema:
+*       type: string
+*   requestBody:
+*    content:
+*     application/json:
+*      schema:
+*       type: object
+*       properties:
+*        currentUserId:
+*         type: string
+*   responses:
+*    200:
+*     description: Success
+*    500:
+*     description: Some server error
+*/
+router.put('/:followingUserId/unfollow', unfollowUser);
+/**
+* @openapi
+* /api/user/{id}:
 *  delete:
 *   description: Delete user by id
+*   tags: [User]
 *   parameters:
 *    - in: path
 *      name: id

@@ -83,3 +83,63 @@ export const getAllUsers = async (req, res) => {
         res.status(403).json({ message: 'You are not allowed to see all users!' });
     }
 }
+
+// follow a user
+export const followUser = async (req, res) => {
+    const { followingUserId } = req.params;
+
+    const { currentUserId } = req.body;
+
+    if (currentUserId !== followingUserId) {
+        try {
+
+            const currentUser = await User.findById(currentUserId);
+            const followingUser = await User.findById(followingUserId);
+
+            if (currentUser.following.includes(followingUserId)) {
+                res.status(403).json({ message: 'You already follow this user' });
+            } else {
+                await currentUser.updateOne({ $push: { following: followingUserId } })
+                await followingUser.updateOne({ $push: { followers: currentUserId } })
+
+                res.status(200).json({ message: 'User has been followed' });
+            }
+
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+
+        }
+    } else {
+        res.status(403).json({ message: 'You cannot follow yourself' });
+    }
+}
+
+// unfollow a user
+export const unfollowUser = async (req, res) => {
+    const { followingUserId } = req.params;
+
+    const { currentUserId } = req.body;
+
+    if (currentUserId !== followingUserId) {
+        try {
+
+            const currentUser = await User.findById(currentUserId);
+            const followingUser = await User.findById(followingUserId);
+
+            if (!currentUser.following.includes(followingUserId)) {
+                res.status(403).json({ message: 'You do not follow this user' });
+            } else {
+                await currentUser.updateOne({ $pull: { following: followingUserId } })
+                await followingUser.updateOne({ $pull: { followers: currentUserId } })
+
+                res.status(200).json({ message: 'User has been unfollowed' });
+            }
+
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+
+        }
+    } else {
+        res.status(403).json({ message: 'You cannot unfollow yourself' });
+    }
+}

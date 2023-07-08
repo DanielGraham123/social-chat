@@ -9,6 +9,7 @@ const router = Router();
 * /api/auth/register:
 *  post:
 *   description: Register a new user
+*   tags: [Authentication]
 *   parameters:
 *    - name: username
 *      description: Username of the user
@@ -48,6 +49,7 @@ router.post('/register', registerUser);
 * /api/auth/login:
 *  post:
 *   description: Login a user
+*   tags: [Authentication]
 *   parameters:
 *    - name: username
 *      description: Username of the user
