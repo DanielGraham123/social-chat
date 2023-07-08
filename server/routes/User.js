@@ -23,7 +23,7 @@ router.get('/all', getAllUsers);
 * /api/user/{id}: 
 *  get: 
 *   description: Get user by id
-*  tags: [User]
+*   tags: [User]
 *   parameters:
 *    - in: path
 *      name: id

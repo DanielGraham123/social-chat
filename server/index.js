@@ -12,6 +12,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 
 import AuthRouter from './routes/Auth.js';
 import UserRouter from './routes/User.js';
+import PostRouter from './routes/Post.js';
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
+app.use('/api/post', PostRouter)
 app.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 // Server Setup
