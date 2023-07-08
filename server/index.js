@@ -54,14 +54,11 @@ app.use(helmet());
 app.use(morgan('combined'));
 
 // Routes
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
 app.use('/api/post', PostRouter)
-app.use('/api/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 // Server Setup
 mongoose.connect(process.env.MONGOOSE_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
