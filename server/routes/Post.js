@@ -1,5 +1,5 @@
 import express from 'express';
-import { createPost, deletePost, getAllPosts, getPost, updatePost } from '../controllers/Post.js';
+import { createPost, deletePost, getAllPosts, getPost, getTimelinePosts, likePost, updatePost } from '../controllers/Post.js';
 
 const router = express.Router();
 
@@ -18,6 +18,27 @@ const router = express.Router();
 *     description: Some server error
 */
 router.get('/all', getAllPosts);
+/** 
+* @openapi
+* /api/post/timeline:
+*  get:
+*   description: Get user's posts timeline
+*   tags: [Post]
+*   parameters:
+*    - in: query
+*      name: userId
+*      required: true
+*      schema:
+*       type: string
+*   responses:
+*    200:
+*     description: Success
+*    403:
+*     description: You are not allowed to see timeline posts!
+*    500:
+*     description: Some server error
+*/
+router.get('/timeline', getTimelinePosts);
 /**
 * @openapi
 * /api/post/{id}:
@@ -83,6 +104,35 @@ router.get('/:id', getPost);
 *     description: Some server error
 */
 router.post('/create', createPost);
+/** 
+* @openapi
+* /api/post/{postId}/like:
+*  put:
+*   description: Like post by id
+*   tags: [Post]
+*   parameters:
+*    - in: path
+*      name: postId
+*      required: true
+*      schema:
+*       type: string
+*   requestBody:
+*    content:
+*     application/x-www-form-urlencoded:
+*      schema:
+*       type: object
+*       properties:
+*        userId:
+*         type: string
+*   responses:
+*    200:
+*     description: Success
+*    404:
+*     description: Post not found
+*    500:
+*     description: Some server error
+*/
+router.put('/:postId/like', likePost);
 /**
 * @openapi
 * /api/post/{id}:

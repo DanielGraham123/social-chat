@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Post from "../models/Post.js";
 import User from "../models/User.js";
 
@@ -76,13 +77,83 @@ export const deletePost = async (req, res) => {
 }
 
 export const getAllPosts = async (req, res) => {
+    const { currentAdminStatus } = req.body;
+    const { userId } = req.body;
+
+    if (currentAdminStatus && !userId) {
+        try {
+            const posts = await Post.find();
+
+            res.status(200).json(posts);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    } else if (userId) {
+        try {
+            const posts = await Post.find({ userId: userId });
+
+            res.status(200).json(posts);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+}
+
+export const likePost = async (req, res) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
 
     try {
-        const posts = await Post.find();
 
-        res.status(200).json(posts);
+        const post = await Post.findById(postId);
+
+        if (!post) return res.status(404).json({ message: 'Post not found' });
+
+        if (!post.likes.includes(userId)) {
+            await post.updateOne({ $push: { likes: userId } })
+            res.status(200).json({ message: 'Post has been liked' })
+        } else {
+            await post.updateOne({ $pull: { likes: userId } })
+            res.status(200).json({ message: 'Post has been unliked' })
+        }
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 
+}
+
+export const getTimelinePosts = async (req, res) => {
+    const { userId } = req.query;
+
+    try {
+        const userPosts = await Post.find({ userId: userId });
+        const followingPosts = await User.aggregate([
+            {
+                $match: { "_id": new mongoose.Types.ObjectId(userId) }
+            },
+            {
+                $lookup: {
+                    from: 'posts',
+                    localField: 'following',
+                    foreignField: 'userId',
+                    as: 'followingPosts'
+                }
+            },
+            {
+                $project: {
+                    followingPosts: 1,
+                    "_id": 0
+                }
+            }
+        ]);
+
+        let timelinePosts = userPosts.concat(...followingPosts[0].followingPosts).sort((a, b) => b.updatedAt - a.updatedAt);
+
+        res.status(200).json(timelinePosts);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
