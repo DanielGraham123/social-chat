@@ -13,6 +13,8 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import AuthRouter from './routes/Auth.js';
 import UserRouter from './routes/User.js';
 import PostRouter from './routes/Post.js';
+import ChatRouter from './routes/Chat.js';
+import MessageRouter from './routes/Message.js';
 
 const app = express();
 
@@ -54,10 +56,11 @@ app.use(helmet());
 app.use(morgan('combined'));
 
 // Routes
-
 app.use('/api/auth', AuthRouter)
 app.use('/api/user', UserRouter)
 app.use('/api/post', PostRouter)
+app.use('/api/chat', ChatRouter)
+app.use('/api/message', MessageRouter)
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 // Server Setup

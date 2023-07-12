@@ -16,7 +16,10 @@ export const registerUser = async (req, res) => {
         if (user) return res.status(409).json({ message: 'User with username or email already exists' });
 
         await newUser.save();
-        res.status(201).json(newUser);
+
+        const { password: _, ...user_ } = newUser._doc;
+
+        res.status(201).json(user_);
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
@@ -35,7 +38,9 @@ export const loginUser = async (req, res) => {
 
         if (!isPasswordCorrect) return res.status(400).json({ message: 'Invalid credentials' });
 
-        res.status(200).json(user);
+        const { password: _, ...user_ } = user._doc;
+
+        res.status(200).json(user_);
 
     } catch (error) {
         res.status(500).json({ message: error.message });
