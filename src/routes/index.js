@@ -1,4 +1,4 @@
-import { Auth, Home, Profile } from "../pages/index.js";
+import { Auth, Chat, Home, Profile } from "../pages/index.js";
 
 export const routes = [
     {
@@ -12,5 +12,9 @@ export const routes = [
     {
         path: "/profile",
         element: <Profile />,
+    },
+    {
+        path: "/chat",
+        element: <Chat />,
     }
 ]

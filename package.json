@@ -1,5 +1,5 @@
 {
-  "name": "starter",
+  "name": "social-chat-app",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -24,13 +24,15 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",
     "react-scripts": "5.0.0",
+    "socket.io": "^4.7.1",
+    "socket.io-client": "^4.7.1",
     "swagger-autogen": "^2.23.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start & nodemon ./server/index.js",
+    "start": "react-scripts start & nodemon ./server/index.js & nodemon ./socket/index.ts",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -53,5 +55,14 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "nodemonConfig": {
+    "watch": ["socket"],
+    "ext": "ts,json",
+    "exec": "ts-node --files ./socket/index.ts"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
   }
 }
