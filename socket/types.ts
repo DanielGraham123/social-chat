@@ -1,5 +1,5 @@
 export default interface User {
-  name: string;
+  username: string;
   id: string;
   socketId?: string;
 }

@@ -3,6 +3,7 @@ import User from "./types.ts";
 import { createServer } from "http";
 
 const httpServer = createServer();
+const port = 3300;
 
 const io = new Server(httpServer, {
   cors: {
@@ -14,24 +15,44 @@ const io = new Server(httpServer, {
 let activeUsers: User[] = [];
 
 io.on("connection", (socket: Socket) => {
+  let currentSocketId = socket.id;
+
   // new user joins the chat socket
   socket.on("join", (user: User) => {
     if (!activeUsers.includes(user)) {
-      activeUsers.push({ ...user, socketId: socket.id });
-      console.log(`${user.name} joined the chat`);
+      console.log(`${user.username} joining`);
+      activeUsers.push({ ...user, socketId: currentSocketId });
+      console.log(`${user.username} joined the chat`);
     }
 
+    console.log("activeUsers: ", activeUsers);
     // send active users to the frontend
     io.emit("activeUsers", activeUsers);
   });
 
   // disconnect socket
   socket.on("disconnect", () => {
-    activeUsers = activeUsers.filter((user) => user.id !== socket.id);
-    console.log(`${socket.id} disconnected`);
+    activeUsers = activeUsers.filter(
+      (user) => user.socketId !== currentSocketId
+    );
+    console.log("activeUsers: ", activeUsers);
+    console.log(`${currentSocketId} disconnected`);
+  });
+
+  // send message to a specific user
+  socket.on("send-message", (data) => {
+    const { receiverId } = data;
+    console.log("activeUsers send: ", activeUsers);
+    const user = activeUsers.find((user) => user.id === receiverId);
+    console.log("Sending from socket to :", receiverId);
+    console.log("Data: ", data, user);
+    if (user) {
+      console.log("Sending message to: ", user.username);
+      io.to(user.socketId).emit("recieve-message", data);
+    }
   });
 });
 
-httpServer.listen(3300, () => {
-  console.log("Socket server is listening on port 3300");
+httpServer.listen(port, () => {
+  console.log(`Socket server is listening on port ${port}`);
 });

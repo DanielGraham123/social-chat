@@ -5,7 +5,7 @@ const router = express.Router();
 
 /** 
 * @openapi
-* /api/{chatId}:
+* /api/message/{chatId}:
 *  get:
 *    tags:
 *      - Message
