@@ -43,7 +43,8 @@
   "scripts": {
     "start": "env-cmd -f .env.dev react-scripts start & env-cmd -f .env.dev nodemon ./server/index.js & env-cmd -f .env.dev nodemon ./socket/index.ts",
     "build": "env-cmd -f .env.prod react-scripts build",
-    "start:server": "env-cmd -f .env.prod nodemon ./server/index.js & env-cmd -f .env.prod nodemon ./socket/index.ts",
+    "start:server": "env-cmd -f .env.prod nodemon ./server/index.js",
+    "start:socket": "env-cmd -f .env.prod nodemon ./socket/index.ts",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "swagger-autogen": "node ./server/swagger.js"
