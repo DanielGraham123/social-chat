@@ -15,6 +15,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "mongoose": "^7.3.1",
@@ -40,8 +41,10 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start & nodemon ./server/index.js & nodemon ./socket/index.ts",
-    "build": "react-scripts build",
+    "start": "env-cmd -f .env.dev react-scripts start & env-cmd -f .env.dev nodemon ./server/index.js & env-cmd -f .env.dev nodemon ./socket/index.ts",
+    "build": "env-cmd -f .env.prod react-scripts build",
+    "start:server": "env-cmd -f .env.prod nodemon ./server/index.js",
+    "start:socket": "env-cmd -f .env.prod nodemon ./socket/index.ts",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "swagger-autogen": "node ./server/swagger.js"

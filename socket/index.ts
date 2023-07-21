@@ -1,13 +1,16 @@
 import { Server, Socket } from "socket.io";
 import User from "./types.ts";
 import { createServer } from "http";
+import dotenv from "dotenv";
 
 const httpServer = createServer();
 const port = 3300;
 
+dotenv.config();
+
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3001",
+    origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
   },
 });
@@ -35,7 +38,7 @@ io.on("connection", (socket: Socket) => {
     activeUsers = activeUsers.filter(
       (user) => user.socketId !== currentSocketId
     );
-    console.log("activeUsers: ", activeUsers);
+    // console.log("activeUsers: ", activeUsers);
     console.log(`${currentSocketId} disconnected`);
   });
 

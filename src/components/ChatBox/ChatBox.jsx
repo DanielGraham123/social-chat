@@ -49,6 +49,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   // Always scroll to last Message
   useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
+    // console.log("messages: ", messages);
   }, [messages]);
 
   // Send Message
@@ -93,6 +94,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
               <div className="follower">
                 <div>
                   <img
+                    crossOrigin="anonymous"
                     src={
                       userData?.profilePicture
                         ? process.env.REACT_APP_PUBLIC_FOLDER +
@@ -100,6 +102,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                         : process.env.REACT_APP_PUBLIC_FOLDER +
                           "defaultProfile.png"
                     }
+                    loading="lazy"
                     alt="Profile"
                     className="followerImage"
                     style={{ width: "50px", height: "50px" }}
@@ -123,7 +126,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
             <div className="chat-body">
               {messages.map((message) => (
                 <div
-                  key={message._id}
+                  key={message.createdAt}
                   ref={scroll}
                   className={
                     message.senderId === currentUser ? "message own" : "message"

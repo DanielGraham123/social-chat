@@ -28,11 +28,13 @@ const Conversation = ({ data, currentUser, online }) => {
         <div>
           {online && <div className="online-dot"></div>}
           <img
+            crossOrigin="anonymous"
             src={
               userData?.profilePicture
                 ? process.env.REACT_APP_PUBLIC_FOLDER + userData.profilePicture
                 : process.env.REACT_APP_PUBLIC_FOLDER + "defaultProfile.png"
             }
+            loading="lazy"
             alt="Profile"
             className="followerImage"
             style={{ width: "50px", height: "50px" }}

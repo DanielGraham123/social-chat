@@ -36,7 +36,7 @@ const Chat = () => {
 
   // Connect to Socket.io
   useEffect(() => {
-    socket.current = io("ws://localhost:3300");
+    socket.current = io(`${process.env.REACT_APP_SOCKET_URL}`);
     socket.current.emit("join", { id: user?._id, ...user });
     socket.current.on("activeUsers", (users) => {
       setOnlineUsers(users);
@@ -73,7 +73,7 @@ const Chat = () => {
         <div className="Chat-container">
           <h2>Chats</h2>
           <div className="Chat-list">
-            {chats.map((chat) => (
+            {chats?.map((chat) => (
               <div
                 key={chat._id}
                 onClick={() => {

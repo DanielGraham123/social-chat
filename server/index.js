@@ -63,7 +63,9 @@ app.use('/api/post', PostRouter)
 app.use('/api/chat', ChatRouter)
 app.use('/api/message', MessageRouter)
 // to serve images inside public folder
-app.use('/images', express.static(__dirname + '/public/imgs'));
+// app.use('/images', express.static(__dirname + '/public/imgs'));
+app.use(express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static('public'))
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 // app.use(express.static('public'));
