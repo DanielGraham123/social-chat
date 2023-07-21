@@ -4,6 +4,7 @@ import { createServer } from "http";
 import dotenv from "dotenv";
 
 const httpServer = createServer();
+const hostname = "0.0.0.0";
 const port = 3300;
 
 dotenv.config();
@@ -56,6 +57,6 @@ io.on("connection", (socket: Socket) => {
   });
 });
 
-httpServer.listen(port, () => {
-  console.log(`Socket server is listening on port ${port}`);
+httpServer.listen(port, hostname, () => {
+  console.log(`Socket server running at http://${hostname}:${port}/`);
 });
