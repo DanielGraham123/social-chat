@@ -49,8 +49,6 @@ const options = {
 const swaggerDocs = swaggerJSDoc(options);
 
 // Middleware
-app.use(express.static('public'));
-app.use('/images', express.static(__dirname + '/public/imgs'));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
@@ -65,8 +63,10 @@ app.use('/api/post', PostRouter)
 app.use('/api/chat', ChatRouter)
 app.use('/api/message', MessageRouter)
 // to serve images inside public folder
+app.use('/images', express.static(__dirname + '/public/imgs'));
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
+// app.use(express.static('public'));
 
 // Server Setup
 mongoose.connect(process.env.MONGOOSE_URL, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
