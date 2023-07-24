@@ -36,7 +36,9 @@ const Chat = () => {
 
   // Connect to Socket.io
   useEffect(() => {
-    socket.current = io(`${process.env.REACT_APP_SOCKET_URL}`);
+    socket.current = io(`${process.env.REACT_APP_SOCKET_URL}`, {
+      transports: ["polling"],
+    });
     socket.current.emit("join", { id: user?._id, ...user });
     socket.current.on("activeUsers", (users) => {
       setOnlineUsers(users);
