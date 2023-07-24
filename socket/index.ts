@@ -15,8 +15,8 @@ const io = new Server(httpServer, {
     methods: ["GET", "POST"],
   },
   allowRequest: (req, callback) => {
-    const noOrigin = !req.headers.origin;
-    callback(null, noOrigin || true);
+    const noOrigin = req.headers.origin === undefined;
+    callback(null, noOrigin);
   },
   transports: ["websocket", "polling"],
 });
