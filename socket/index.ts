@@ -18,7 +18,7 @@ const io = new Server(httpServer, {
   //   const noOrigin = req.headers.origin === undefined;
   //   callback(null, noOrigin);
   // },
-  transports: ["websocket", "polling"],
+  transports: ["websocket"],
 });
 
 let activeUsers: User[] = [];
