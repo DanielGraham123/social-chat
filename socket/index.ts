@@ -14,11 +14,11 @@ const io = new Server(httpServer, {
     origin: "*",
     methods: ["GET", "POST"],
   },
-  allowRequest: (req, callback) => {
-    const noOrigin = req.headers.origin === undefined;
-    callback(null, noOrigin);
-  },
-  // transports: ["websocket", "polling"],
+  // allowRequest: (req, callback) => {
+  //   const noOrigin = req.headers.origin === undefined;
+  //   callback(null, noOrigin);
+  // },
+  transports: ["websocket", "polling"],
 });
 
 let activeUsers: User[] = [];
