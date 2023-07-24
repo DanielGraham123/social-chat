@@ -4,7 +4,7 @@ import { createServer } from "http";
 import dotenv from "dotenv";
 
 const httpServer = createServer();
-const hostname = process.env.REACT_APP_SOCKET_DOMAIN;
+const hostname = "0.0.0.0";
 const port = 3300;
 
 dotenv.config();
