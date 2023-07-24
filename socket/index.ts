@@ -4,7 +4,7 @@ import { createServer } from "http";
 import dotenv from "dotenv";
 
 const httpServer = createServer();
-const hostname = "0.0.0.0";
+const hostname = process.env.REACT_APP_SOCKET_DOMAIN;
 const port = 3300;
 
 dotenv.config();
@@ -14,6 +14,7 @@ const io = new Server(httpServer, {
     origin: process.env.CLIENT_URL,
     methods: ["GET", "POST"],
   },
+  transports: ["websocket", "polling"],
 });
 
 let activeUsers: User[] = [];
@@ -58,5 +59,10 @@ io.on("connection", (socket: Socket) => {
 });
 
 httpServer.listen(port, hostname, () => {
-  console.log(`Socket server running at http://${hostname}:${port}/`);
+  console.log("node_env: ", process.env.NODE_ENV);
+  if (process.env.NODE_ENV === "development") {
+    console.log(`Socket server running at http://${hostname}:${port}/`);
+  } else {
+    console.log(`Socket server running at http://${hostname}/`);
+  }
 });
